@@ -26,12 +26,31 @@ Unity 2021.3.16f1
 
 ![](doc/unitest.png)
 
+4. 新增 ``ForeignKeyAttribute`` 用例，这样一来 Query （查询）一个对象时就会自动创建关联的对象啦，至此用户再也不需要自己进行联合查询了
+
+	Add ``ForeignKeyAttribute`` test case, so that when Query an object, the associated object will be created automatically, so that users no longer need to perform joint queries
+
+> 示例代码展示的是仅对 A 进行一次查询，但是 B 也能够自动生成实例 (One Query for All!)
+
+![One Query for All](doc/automapping.png)
+
+
 
 # 使用方法 / How to use
 
-clone 本项目后，使用 对应版本的 Unity 开启即可。
+* clone 本项目后，使用 对应版本的 Unity 开启即可。
 
-After cloning this project, use the corresponding version of Unity to open it.
+	After cloning this project, use the corresponding version of Unity to open it.
+
+* AutoMapping（One Query for All） 测试，直接将场景中 ObjectAutoMapping 对象隐藏再显示即可触发。
+
+	AutoMapping（One Query for All） test, just hide and show the ObjectAutoMapping object in the scene to	 trigger it.
+
+* 常规测试在场景中 Test 游戏对象上，点击运行后，在面板上点击对应的按钮即可。
+
+	For normal testing, click the Test game object in the scene, click the corresponding button on the panel after running.
+
+
 
 
 # 参考链接 / Reference
