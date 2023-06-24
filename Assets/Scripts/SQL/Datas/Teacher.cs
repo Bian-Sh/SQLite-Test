@@ -1,12 +1,8 @@
 ﻿using SQLite;
 
-[Table("Teachers")]
-public class Teacher
+[Table("Teacher")]
+public class Teacher : BaseEntity
 {
-    [PrimaryKey,AutoIncrement]
-    [Column("teacher_id")]
-    public int teacher_id { get; set; }
-
     [Column("name")]
     public string name { get; set; }
 

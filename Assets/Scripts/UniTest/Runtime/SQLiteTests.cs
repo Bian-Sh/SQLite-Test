@@ -114,12 +114,12 @@ namespace zFramework.Tests
 
             var query = db.Table<Teacher>().Select(v => new
             {
-                TeacherId = v.teacher_id,
-                CourseName = db.Table<Course>().Where(c => c.teacherId == v.teacher_id).FirstOrDefault().name
+                TeacherId = v.id,
+                CourseName = db.Table<Course>().Where(c => c.teacherId == v.id).FirstOrDefault().name
             }).ToList();
 
             Assert.AreEqual(1, query.Count);
-            Assert.AreEqual(newTeacher.teacher_id, query[0].TeacherId);
+            Assert.AreEqual(newTeacher.id, query[0].TeacherId);
             Assert.AreEqual(newCourse.name, query[0].CourseName);
         }
     }

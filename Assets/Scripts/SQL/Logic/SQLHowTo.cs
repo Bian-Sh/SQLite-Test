@@ -23,6 +23,10 @@ public class SQLHowTo : MonoBehaviour
     {
         var dbPath = $"{Application.streamingAssetsPath}/test.db";
         db = new SQLiteConnection(dbPath);
+
+        // Create tables if they don't exist
+        db.CreateTable<Teacher>();
+        db.CreateTable<Course>();
     }
     private void OnDestroy()
     {
@@ -30,17 +34,33 @@ public class SQLHowTo : MonoBehaviour
     }
 
     [Button]
-    public void InsertCourse() //插入课程
+    public void InsertCourse(int idx) //插入课程
     {
         var newCourse = new Course()
         {
-            name = "新课程",
+            name = $"新课程{idx}",
             description = "这是一门新课程",
             teacherId = 1,
         };
-        db.Insert(newCourse);
-        Debug.Log($"{nameof(SQLHowTo)}: 请通过 SqliteBrowser 查看新增的课程 {name}");
+        var index = db.Insert(newCourse);
+        Debug.Log($"{nameof(SQLHowTo)}: 请通过 SqliteBrowser 查看新增的课程 {name} , {index}行受影响, id = {newCourse.id}");
     }
+    
+    [Button]
+    public void DeleteCourse(int id = 1) //删除课程
+    {
+        var course = db.Table<Course>().Where(c => c.id == id).FirstOrDefault();
+        if (course != null)
+        {
+         var index =  db.Delete(course);
+        Debug.Log($"{nameof(SQLHowTo)}: 请通过 SqliteBrowser 查看课程的删除， {course.name} 将消失 ，{index}行受影响，id = {id}");
+        }
+        else
+        {
+            Debug.Log($"{nameof(SQLHowTo)}: 课程的删除失败，id = {id} 的课程未找到！");
+        }
+    }
+
 
     [Button]
 
@@ -68,16 +88,7 @@ public class SQLHowTo : MonoBehaviour
         Debug.Log($"{nameof(SQLHowTo)}: 请通过 SqliteBrowser 查看课程的更新，after  {course.name}");
     }
 
-    [Button]
-    public void DeleteCourse() //删除课程
-    {
-        var course = db.Table<Course>().Where(c => c.id == 1).FirstOrDefault();
-        if (course != null)
-        {
-            db.Delete(course);
-        }
-        Debug.Log($"{nameof(SQLHowTo)}: 请通过 SqliteBrowser 查看课程的删除， {course.name} 将消失");
-    }
+
 
     [Button]
     public void QueryCoursesWithTeachers() // 对课程和关联教师进行联合查询
@@ -85,7 +96,7 @@ public class SQLHowTo : MonoBehaviour
         var query = db.Table<Course>().Select(c => new
         {
             CourseName = c.name,
-            TeacherName = db.Table<Teacher>().Where(t => t.teacher_id == c.teacherId).FirstOrDefault().name
+            TeacherName = db.Table<Teacher>().Where(t => t.id == c.teacherId).FirstOrDefault().name
         });
         // 可以在这里对 query 进行处理，此处只是简单的打印
         foreach (var item in query)
